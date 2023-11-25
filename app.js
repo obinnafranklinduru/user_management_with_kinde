@@ -1,6 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 const { GrantType, KindeClient } = require('@kinde-oss/kinde-nodejs-sdk');
 const { isAuthenticated } = require('./middlewares/isAuthenticated');
 
@@ -21,6 +22,8 @@ const kindeClient = new KindeClient(options);
 app.use(express.static('public'));
 app.set('view engine', 'pug');
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cors());
+app.options('/*', cors());
 app.use(bodyParser.json());
 
 app.get('/login', kindeClient.login(), (req, res) => {
